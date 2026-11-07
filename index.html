@@ -51,6 +51,9 @@ html.intro-lock{overflow:hidden}
 #intro::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 50%,transparent 55%,rgba(74,52,38,.3) 100%)}
 #intro .skip{position:absolute;z-index:2;bottom:clamp(20px,4vh,34px);left:clamp(20px,5vw,72px);padding:9px 22px;border-radius:999px;border:1px solid rgba(139,94,60,.55);background:rgba(250,246,239,.72);backdrop-filter:blur(4px);color:var(--brown);font:inherit;font-size:14px;letter-spacing:.08em;cursor:pointer;transition:background .3s,color .3s}
 #intro .skip:hover{background:var(--clay);color:var(--cream)}
+#intro .play{position:absolute;z-index:2;top:50%;left:50%;translate:-50% -50%;width:92px;height:92px;border-radius:50%;border:1px solid rgba(139,94,60,.6);background:rgba(250,246,239,.8);backdrop-filter:blur(4px);display:none;place-items:center;pointer-events:none}
+#intro .play::before{content:"";margin-left:6px;border-style:solid;border-width:15px 0 15px 24px;border-color:transparent transparent transparent var(--clay)}
+#intro.tap .play{display:grid}
 #intro .bar{position:absolute;z-index:2;bottom:0;right:0;height:2px;width:0;background:var(--clay)}
 #intro.out{opacity:0;visibility:hidden}
 #intro.out video{scale:1.08;filter:blur(6px)}
@@ -152,6 +155,7 @@ footer nav{font-size:15px}
 <!-- מסך פתיחה: סרטון הלוגו -->
 <div id="intro">
   <video muted playsinline preload="auto" poster="mida/field-web.jpg" src="mida/gemini_generated_video_9db9766e.mp4"></video>
+  <i class="play" aria-hidden="true"></i>
   <button class="skip" type="button">דילוג</button>
   <i class="bar"></i>
 </div>
@@ -308,10 +312,16 @@ footer nav{font-size:15px}
     });
     iv.addEventListener('ended',finish);
     iv.addEventListener('error',finish);
-    intro.addEventListener('click',finish);
+    var started=false;
+    iv.addEventListener('playing',function(){ started=true; intro.classList.remove('tap'); });
+    // בנייד הדפדפן לפעמים חוסם ניגון אוטומטי (חיסכון בסוללה / נתונים): מציגים כפתור הפעלה במקום לדלג
+    function tryPlay(){ var p=iv.play(); if(p&&p.catch) p.catch(function(){ if(!started) intro.classList.add('tap'); }); }
+    intro.addEventListener('click',function(){ if(intro.classList.contains('tap')) tryPlay(); else finish(); });
+    intro.querySelector('.skip').addEventListener('click',function(e){ e.stopPropagation(); finish(); });
     document.addEventListener('keydown',function(e){ if(e.key==='Escape'||e.key==='Enter') finish(); });
-    var p=iv.play(); if(p&&p.catch) p.catch(finish);          // אם הדפדפן חוסם ניגון: נכנסים ישר לאתר
-    setTimeout(function(){ if(iv.currentTime<0.1) finish(); },3500); // אם הסרטון לא נטען: לא משאירים מסך תקוע
+    tryPlay();
+    // חיבור איטי: נותנים לסרטון זמן להיטען לפני שוויתרנו
+    setTimeout(function(){ if(!started && !intro.classList.contains('tap')) finish(); },15000);
   }
 
   if(!window.gsap||reduce) return;
