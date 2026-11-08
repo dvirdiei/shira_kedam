@@ -39,24 +39,26 @@ nav a:hover::after,nav a.active::after{width:100%}
 /* ===== פתיח ===== */
 .hero{min-height:100vh;display:grid;place-items:center;text-align:center;padding:120px clamp(20px,5vw,72px) 90px;position:relative;overflow:clip}
 
-/* ===== לוגו מונפש בפתיח (SVG בעץ זברה) ===== */
+/* ===== לוגו מונפש בפתיח (SVG, צבע חום אחיד) ===== */
 .logo-hero{margin:0 auto;width:clamp(200px,26vw,300px);line-height:0}
-.kd-logo{display:block;width:100%;height:auto;overflow:visible;filter:saturate(.8) drop-shadow(0 10px 16px rgba(74,52,38,.2))}
-:root{--float-speed:5s;--float-distance:9px;--sway-angle:1.4deg}
-@keyframes kdTop{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(0,calc(var(--float-distance)*-1),0) scale(1.018)}}
-@keyframes kdBottom{0%,100%{transform:translate3d(0,0,0) scale(1)}50%{transform:translate3d(0,var(--float-distance),0) scale(1.018)}}
-@keyframes kdSwayL{0%,100%{transform:rotate(0)}50%{transform:rotate(calc(var(--sway-angle)*-1))}}
-@keyframes kdSwayR{0%,100%{transform:rotate(0)}50%{transform:rotate(var(--sway-angle))}}
-@keyframes kdBreath{0%,100%{transform:scale(1)}50%{transform:scale(1.008)}}
-.ornament-top-wrapper{transform-origin:400px 210px;animation:kdTop var(--float-speed) cubic-bezier(.45,.05,.55,.95) infinite}
-.ornament-bottom-wrapper{transform-origin:400px 625px;animation:kdBottom var(--float-speed) cubic-bezier(.45,.05,.55,.95) infinite}
+.kd-logo{display:block;width:100%;height:auto;overflow:visible;color:var(--brown)}
+/* כניסה: העיטורים מגיעים מרחוק בעדינות והמילה נחשפת, ואז נשארת רק תנועת ריחוף איטית */
+@keyframes kdIn{from{opacity:0;transform:translate3d(0,var(--from,0),0)}to{opacity:1;transform:none}}
+@keyframes kdFloatUp{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,-6px,0)}}
+@keyframes kdFloatDown{0%,100%{transform:translate3d(0,0,0)}50%{transform:translate3d(0,6px,0)}}
+@keyframes kdSwayL{0%,100%{transform:rotate(0)}50%{transform:rotate(-.9deg)}}
+@keyframes kdSwayR{0%,100%{transform:rotate(0)}50%{transform:rotate(.9deg)}}
+#top-ornament-parallax{--from:-26px;animation:kdIn 1.6s cubic-bezier(.16,1,.3,1) .25s both}
+#center-wordmark-parallax{animation:kdIn 1.6s cubic-bezier(.16,1,.3,1) .5s both}
+#bottom-ornament-parallax{--from:26px;animation:kdIn 1.6s cubic-bezier(.16,1,.3,1) .75s both}
+.ornament-top-wrapper{transform-origin:400px 210px;will-change:transform;animation:kdFloatUp 8s cubic-bezier(.37,0,.63,1) 2.4s infinite}
+.ornament-bottom-wrapper{transform-origin:400px 625px;will-change:transform;animation:kdFloatDown 8s cubic-bezier(.37,0,.63,1) 2.4s infinite}
 .wing-left,.wing-right{transform-origin:400px 210px}
-.wing-left{animation:kdSwayL var(--float-speed) ease-in-out infinite}
-.wing-right{animation:kdSwayR var(--float-speed) ease-in-out infinite}
+.wing-left{animation:kdSwayL 8s cubic-bezier(.37,0,.63,1) 2.4s infinite}
+.wing-right{animation:kdSwayR 8s cubic-bezier(.37,0,.63,1) 2.4s infinite}
 .wing-bottom-left,.wing-bottom-right{transform-origin:400px 625px}
-.wing-bottom-left{animation:kdSwayR var(--float-speed) ease-in-out infinite}
-.wing-bottom-right{animation:kdSwayL var(--float-speed) ease-in-out infinite}
-.kedem-wordmark{transform-origin:400px 415px;animation:kdBreath calc(var(--float-speed)*1.5) ease-in-out infinite}
+.wing-bottom-left{animation:kdSwayR 8s cubic-bezier(.37,0,.63,1) 2.4s infinite}
+.wing-bottom-right{animation:kdSwayL 8s cubic-bezier(.37,0,.63,1) 2.4s infinite}
 @media (prefers-reduced-motion:reduce){.kd-logo *{animation:none!important}}
 /* פאנלים שקופים למחצה מעל שדה החיטה */
 .story,.values,.contact{position:relative;isolation:isolate}
@@ -171,115 +173,15 @@ footer nav{font-size:15px}
 <section class="hero">
   <div class="text">
     <div class="eyebrow" data-in>קולקציית שמלות</div>
-    <h1 class="logo-hero" data-in aria-label="קדם - שמלות שאין לאף אחת אחרת">
+    <h1 class="logo-hero" aria-label="קדם - שמלות שאין לאף אחת אחרת">
 <svg class="kd-logo" viewBox="150 22 544 730" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
-        <defs>
-          <!-- ==========================================
-               WARM ZEBRAWOOD (עץ זברה חם) VECTOR TEXTURE
-               ========================================== -->
-          <!-- Base Warm Amber & Espresso Gradient -->
-          <linearGradient id="zebrawood-base" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#b57236" />
-            <stop offset="25%" stop-color="#d59455" />
-            <stop offset="50%" stop-color="#9e5b24" />
-            <stop offset="75%" stop-color="#cc8847" />
-            <stop offset="100%" stop-color="#7c4215" />
-          </linearGradient>
-
-          <!-- High-Resolution Vector Zebrawood Pattern (Stripes + Organic Waves) -->
-          <pattern id="zebrawood-pattern" patternUnits="userSpaceOnUse" width="800" height="820" patternTransform="rotate(-4)">
-            <!-- Warm Golden Honey Wood Base -->
-            <rect width="800" height="820" fill="url(#zebrawood-base)" />
-
-            <!-- Subtle Warm Undertone Bands -->
-            <g opacity="0.55">
-              <path d="M-100,40 Q200,25 500,45 T900,35" stroke="#e2a86b" stroke-width="26" fill="none" />
-              <path d="M-100,110 Q250,125 550,100 T900,115" stroke="#854617" stroke-width="18" fill="none" />
-              <path d="M-100,175 Q180,160 480,185 T900,170" stroke="#e5ae74" stroke-width="28" fill="none" />
-              <path d="M-100,240 Q300,260 550,235 T900,250" stroke="#7d4114" stroke-width="16" fill="none" />
-              <path d="M-100,310 Q220,290 520,315 T900,300" stroke="#dfa263" stroke-width="32" fill="none" />
-              <path d="M-100,375 Q260,395 540,370 T900,385" stroke="#8c4c1b" stroke-width="22" fill="none" />
-              <path d="M-100,435 Q190,420 490,445 T900,430" stroke="#e6b078" stroke-width="26" fill="none" />
-              <path d="M-100,500 Q280,515 560,490 T900,505" stroke="#753b10" stroke-width="20" fill="none" />
-              <path d="M-100,570 Q210,550 510,575 T900,565" stroke="#de9f5f" stroke-width="30" fill="none" />
-              <path d="M-100,640 Q260,655 540,635 T900,645" stroke="#8a4919" stroke-width="18" fill="none" />
-              <path d="M-100,710 Q220,695 520,715 T900,705" stroke="#e4ab70" stroke-width="26" fill="none" />
-              <path d="M-100,775 Q270,790 550,765 T900,780" stroke="#7c4013" stroke-width="22" fill="none" />
-            </g>
-
-            <!-- Characteristic Dark Espresso & Umber Zebrawood Veins -->
-            <g opacity="0.88" stroke-linecap="round">
-              <!-- Top Ornament Grain Zone -->
-              <path d="M-80,18 C150,8 340,29 560,16 C700,8 820,24 900,19" stroke="#3c1b06" stroke-width="5.5" fill="none" />
-              <path d="M-80,31 C180,24 380,39 590,29 C720,22 830,33 900,28" stroke="#592b0d" stroke-width="3" fill="none" />
-              <path d="M-80,55 C140,66 360,44 580,57 C710,64 810,50 900,56" stroke="#2d1303" stroke-width="7" fill="none" />
-              <path d="M-80,72 C200,81 400,62 610,74 C730,80 820,68 900,72" stroke="#4f250a" stroke-width="4" fill="none" />
-              <path d="M-80,96 C160,84 350,105 570,92 C700,84 820,101 900,94" stroke="#381805" stroke-width="6.5" fill="none" />
-              <path d="M-80,118 C190,129 410,109 620,122 C740,128 830,115 900,120" stroke="#2a1102" stroke-width="8" fill="none" />
-              <path d="M-80,136 C210,145 390,128 600,139 C720,144 820,132 900,137" stroke="#5d2e0f" stroke-width="3.5" fill="none" />
-              <path d="M-80,158 C150,146 370,168 590,154 C710,146 820,162 900,156" stroke="#3b1a05" stroke-width="7.5" fill="none" />
-              <path d="M-80,179 C180,170 390,189 610,176 C730,169 830,184 900,178" stroke="#54280b" stroke-width="4" fill="none" />
-              <path d="M-80,202 C160,214 380,192 600,206 C720,213 820,198 900,204" stroke="#2f1403" stroke-width="6.5" fill="none" />
-              <path d="M-80,224 C200,234 410,215 620,228 C740,235 830,220 900,226" stroke="#472108" stroke-width="5" fill="none" />
-              <path d="M-80,248 C150,238 360,258 580,245 C710,237 820,252 900,246" stroke="#331604" stroke-width="7" fill="none" />
-              <path d="M-80,270 C190,260 400,280 610,268 C730,261 830,275 900,270" stroke="#5c2d0e" stroke-width="3.5" fill="none" />
-
-              <!-- Center "קדם" Letters Rich Dense Grain Zone -->
-              <path d="M-80,295 C140,308 320,284 530,298 C680,308 810,290 900,296" stroke="#2b1203" stroke-width="9" fill="none" />
-              <path d="M-80,310 C160,320 340,299 550,312 C690,321 820,305 900,311" stroke="#582a0c" stroke-width="4" fill="none" />
-              <path d="M-80,326 C180,314 370,336 580,322 C710,313 820,330 900,324" stroke="#381805" stroke-width="7.5" fill="none" />
-              <path d="M-80,342 C150,333 350,350 560,338 C700,330 820,345 900,340" stroke="#693513" stroke-width="3.5" fill="none" />
-              <path d="M-80,358 C130,372 340,346 560,362 C690,371 810,352 900,360" stroke="#260f02" stroke-width="10.5" fill="none" />
-              <path d="M-80,372 C160,382 360,362 580,375 C710,383 820,367 900,373" stroke="#52260a" stroke-width="4.5" fill="none" />
-              <path d="M-80,389 C190,376 390,398 600,385 C730,377 830,392 900,387" stroke="#341604" stroke-width="8" fill="none" />
-              <path d="M-80,404 C170,395 370,412 580,400 C710,392 820,408 900,402" stroke="#613010" stroke-width="3.5" fill="none" />
-              <path d="M-80,420 C140,434 350,408 570,424 C700,433 810,415 900,422" stroke="#291102" stroke-width="9.5" fill="none" />
-              <path d="M-80,436 C180,446 380,426 590,439 C720,447 820,431 900,437" stroke="#4d2409" stroke-width="5" fill="none" />
-              <path d="M-80,454 C160,442 360,464 580,450 C710,441 820,458 900,452" stroke="#3a1905" stroke-width="7.5" fill="none" />
-              <path d="M-80,470 C200,460 400,478 610,466 C730,458 830,474 900,468" stroke="#240e01" stroke-width="9" fill="none" />
-              <path d="M-80,486 C170,496 370,476 590,489 C720,497 820,481 900,487" stroke="#5a2c0d" stroke-width="4" fill="none" />
-              <path d="M-80,504 C150,492 360,514 580,500 C710,491 820,508 900,502" stroke="#351704" stroke-width="8.5" fill="none" />
-              <path d="M-80,522 C190,532 390,512 600,525 C730,533 830,517 900,523" stroke="#4e2409" stroke-width="5" fill="none" />
-              <path d="M-80,540 C160,528 370,548 590,536 C720,528 820,544 900,538" stroke="#2c1203" stroke-width="7.5" fill="none" />
-
-              <!-- Bottom Ornament Grain Zone -->
-              <path d="M-80,564 C180,576 390,554 600,568 C730,576 830,560 900,566" stroke="#3d1b06" stroke-width="6.5" fill="none" />
-              <path d="M-80,586 C150,574 360,596 580,582 C710,574 820,590 900,584" stroke="#2a1102" stroke-width="8" fill="none" />
-              <path d="M-80,606 C190,616 400,596 610,609 C730,617 830,601 900,607" stroke="#56290c" stroke-width="4" fill="none" />
-              <path d="M-80,626 C160,614 370,636 590,622 C720,614 820,630 900,624" stroke="#341604" stroke-width="7.5" fill="none" />
-              <path d="M-80,648 C200,658 410,638 620,651 C740,659 830,643 900,649" stroke="#281002" stroke-width="8.5" fill="none" />
-              <path d="M-80,668 C170,656 380,678 600,664 C720,656 820,672 900,666" stroke="#53270b" stroke-width="4.5" fill="none" />
-              <path d="M-80,690 C150,702 360,680 580,694 C710,702 820,686 900,692" stroke="#391905" stroke-width="7" fill="none" />
-              <path d="M-80,714 C190,702 400,724 610,710 C730,702 830,718 900,712" stroke="#2d1303" stroke-width="6.5" fill="none" />
-              <path d="M-80,738 C160,748 370,728 590,741 C720,749 820,733 900,739" stroke="#4c2309" stroke-width="5" fill="none" />
-            </g>
-
-            <!-- Fine Golden-Bronze Wood Highlight Fibers -->
-            <g opacity="0.45" stroke="#f3c187" stroke-width="1.5" fill="none">
-              <path d="M-80,24 C170,14 360,34 580,22" />
-              <path d="M-80,104 C180,92 370,112 590,100" />
-              <path d="M-80,188 C160,178 380,196 600,184" />
-              <path d="M-80,302 C150,314 330,292 540,305" />
-              <path d="M-80,349 C140,362 350,338 570,352" />
-              <path d="M-80,396 C180,384 380,404 590,392" />
-              <path d="M-80,444 C170,432 370,452 590,440" />
-              <path d="M-80,494 C160,482 370,502 590,490" />
-              <path d="M-80,596 C180,606 390,586 600,599" />
-              <path d="M-80,658 C180,646 390,668 610,654" />
-            </g>
-          </pattern>
-
-          <!-- Subtle Bevel / Wood Depth Filter -->
-          <filter id="wood-bevel" x="-10%" y="-10%" width="120%" height="120%">
-            <feDropShadow dx="0" dy="2" stdDeviation="1.5" flood-color="#2b1203" flood-opacity="0.28" />
-          </filter>
-        </defs>
+        
 
         <!-- =======================================================
              1. TOP BOTANICAL ORNAMENT (עיטור בוטני עליון מרחף)
              ======================================================= -->
         <g id="top-ornament-parallax">
-          <g class="ornament-top-wrapper" fill="url(#zebrawood-pattern)" stroke="url(#zebrawood-pattern)" filter="url(#wood-bevel)">
+          <g class="ornament-top-wrapper" fill="currentColor" stroke="currentColor">
             
             <!-- Central Vertical Stem -->
             <path d="M400,278 C399,225 401,140 400,45" stroke-width="5.5" stroke-linecap="round" fill="none" />
@@ -380,7 +282,7 @@ footer nav{font-size:15px}
              2. CENTER CALLIGRAPHIC WORDMARK ("קדם")
              ======================================================= -->
         <g id="center-wordmark-parallax">
-          <g class="kedem-wordmark" fill="url(#zebrawood-pattern)" filter="url(#wood-bevel)">
+          <g class="kedem-wordmark" fill="currentColor">
             
             <!-- LETTER MEM SOFIT (ם - Left Letter) -->
             <!-- Crafted to match the vintage calligraphic Hebrew serif in the original image -->
@@ -471,7 +373,7 @@ footer nav{font-size:15px}
              3. BOTTOM BOTANICAL ORNAMENT (עיטור בוטני תחתון מרחף)
              ======================================================= -->
         <g id="bottom-ornament-parallax">
-          <g class="ornament-bottom-wrapper" fill="url(#zebrawood-pattern)" stroke="url(#zebrawood-pattern)" filter="url(#wood-bevel)">
+          <g class="ornament-bottom-wrapper" fill="currentColor" stroke="currentColor">
             
             <!-- Central Vertical Diamond / Cross Axis -->
             <path d="M400,562 L400,728" stroke-width="5" stroke-linecap="round" fill="none" />
