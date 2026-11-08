@@ -40,12 +40,13 @@ nav a:hover::after,nav a.active::after{width:100%}
 .hero{min-height:100vh;display:grid;place-items:center;text-align:center;padding:120px clamp(20px,5vw,72px) 90px;position:relative;overflow:clip}
 
 /* ===== לוגו מונפש בפתיח (SVG, צבע חום אחיד) ===== */
-.logo-hero{margin:0 auto;width:clamp(200px,26vw,300px);line-height:0}
+.logo-hero{margin:0 auto;width:clamp(180px,21vw,260px);line-height:0}
 .kd-logo{display:block;width:100%;height:auto;overflow:visible}
 /* כניסה עדינה בלבד: הלוגו נחשף בהדרגה ונשאר במקומו (בלי ריחוף ובלי תנועה) */
 @keyframes kdFade{from{opacity:0}to{opacity:1}}
 #top-ornament-parallax{animation:kdFade 1.4s ease-out .2s both}
 #center-wordmark-parallax{animation:kdFade 1.4s ease-out .5s both}
+#bottom-ornament-parallax{animation:kdFade 1.4s ease-out .8s both}
 @media (prefers-reduced-motion:reduce){.kd-logo *{animation:none!important}}
 /* פאנלים שקופים למחצה מעל שדה החיטה */
 .story,.values,.contact{position:relative;isolation:isolate}
@@ -161,7 +162,7 @@ footer nav{font-size:15px}
   <div class="text">
     <div class="eyebrow" data-in>קולקציית שמלות</div>
     <h1 class="logo-hero" aria-label="קדם - שמלות שאין לאף אחת אחרת">
-<svg class="kd-logo" viewBox="130 24 540 600" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
+<svg class="kd-logo" viewBox="130 24 540 795" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-hidden="true">
         <defs>
 <linearGradient id="zebrawood-base" x1="0%" y1="0%" x2="100%" y2="12%">
 <stop offset="0%" stop-color="#3c2618"/><stop offset="28%" stop-color="#4b3020"/><stop offset="55%" stop-color="#392314"/><stop offset="80%" stop-color="#4c3221"/><stop offset="100%" stop-color="#33200f"/>
@@ -425,6 +426,79 @@ footer nav{font-size:15px}
 
           </g>
         </g>
+<g transform="translate(0 76)">
+        <!-- =======================================================
+             3. BOTTOM BOTANICAL ORNAMENT (עיטור בוטני תחתון מרחף)
+             ======================================================= -->
+        <g id="bottom-ornament-parallax">
+          <g class="ornament-bottom-wrapper" fill="url(#zebrawood-pattern)" stroke="url(#zebrawood-pattern)">
+            
+            <!-- Central Vertical Diamond / Cross Axis -->
+            <path d="M400,562 L400,728" stroke-width="5" stroke-linecap="round" fill="none" />
+            
+            <!-- Top Finial Bud of Bottom Ornament -->
+            <path d="M400,554 C392,568 393,582 400,594 C407,582 408,568 400,554 Z M400,564 C397,572 397,579 400,585 C403,579 403,572 400,564 Z" fill-rule="evenodd" />
+            <!-- Upper Flanking Leaves -->
+            <path d="M396,596 C384,592 374,580 378,572 C382,564 392,576 396,596 Z M382,576 C380,580 385,587 391,590 C389,583 385,576 382,576 Z" fill-rule="evenodd" />
+            <path d="M404,596 C416,592 426,580 422,572 C418,564 408,576 404,596 Z M418,576 C420,580 415,587 409,590 C411,583 415,576 418,576 Z" fill-rule="evenodd" />
+
+            <!-- Bottom Finial Point & Flanking Droop Leaves -->
+            <path d="M400,735 C394,716 395,698 400,684 C405,698 406,716 400,735 Z" />
+            <path d="M397,672 C384,682 376,696 382,705 C387,712 395,698 397,672 Z M385,699 C383,694 387,686 393,681 C392,690 388,698 385,699 Z" fill-rule="evenodd" />
+            <path d="M403,672 C416,682 424,696 418,705 C413,712 405,698 403,672 Z M415,699 C417,694 413,686 407,681 C408,690 412,698 415,699 Z" fill-rule="evenodd" />
+
+            <!-- Center Diamond Medallion -->
+            <path d="M400,614 L414,638 L400,662 L386,638 Z M400,624 L407,638 L400,652 L393,638 Z" fill-rule="evenodd" />
+
+            <!-- Left Horizontal Botanical Flourish -->
+            <g class="wing-bottom-left">
+              <!-- Main Horizontal Left Stem -->
+              <path d="M390,638 C345,638 280,639 220,638" stroke-width="5" stroke-linecap="round" fill="none" />
+              <!-- Left Spear Tip -->
+              <path d="M208,638 L228,632 L224,638 L228,644 Z" />
+
+              <!-- Inner Left Upper & Lower Volutes -->
+              <path d="M376,636 C366,620 352,608 342,612 C335,615 342,626 356,632 C364,635 370,636 376,636 Z" />
+              <path d="M376,640 C366,656 352,668 342,664 C335,661 342,650 356,644 C364,641 370,640 376,640 Z" />
+
+              <!-- Mid-Left Upper Leaf & Berry Twig -->
+              <path d="M332,637 C314,626 296,608 280,602 C272,599 270,608 278,614 C290,623 310,633 332,637 Z M279,606 C284,606 296,614 306,622 C294,618 282,611 279,606 Z" fill-rule="evenodd" />
+              <!-- Mid-Left Lower Leaf Branch -->
+              <path d="M342,639 C326,652 310,668 296,674 C288,677 286,668 294,661 C306,651 324,643 342,639 Z M295,669 C300,669 312,660 320,652 C310,656 298,664 295,669 Z" fill-rule="evenodd" />
+              <path d="M318,656 C312,666 306,676 312,682 C317,687 323,676 320,662 Z" />
+
+              <!-- Outer Left Leaves -->
+              <path d="M276,638 C262,628 248,616 238,618 C232,620 238,630 252,635 C260,637 268,638 276,638 Z" />
+              <path d="M276,639 C262,649 248,661 238,659 C232,657 238,647 252,642 C260,640 268,639 276,639 Z" />
+            </g>
+
+            <!-- Right Horizontal Botanical Flourish -->
+            <g class="wing-bottom-right">
+              <!-- Main Horizontal Right Stem -->
+              <path d="M410,638 C455,638 520,639 580,638" stroke-width="5" stroke-linecap="round" fill="none" />
+              <!-- Right Spear Tip -->
+              <path d="M592,638 L572,632 L576,638 L572,644 Z" />
+
+              <!-- Inner Right Upper & Lower Volutes -->
+              <path d="M424,636 C434,620 448,608 458,612 C465,615 458,626 444,632 C436,635 430,636 424,636 Z" />
+              <path d="M424,640 C434,656 448,668 458,664 C465,661 458,650 444,644 C436,641 430,640 424,640 Z" />
+
+              <!-- Mid-Right Upper Leaf & Cluster -->
+              <path d="M468,637 C486,626 504,608 520,602 C528,599 530,608 522,614 C510,623 490,633 468,637 Z M521,606 C516,606 504,614 494,622 C506,618 518,611 521,606 Z" fill-rule="evenodd" />
+              <path d="M494,620 C500,610 510,602 518,606" stroke-width="2.5" stroke-linecap="round" fill="none" />
+
+              <!-- Mid-Right Lower Blossom & Leaves -->
+              <path d="M458,639 C474,652 490,668 504,674 C512,677 514,668 506,661 C494,651 476,643 458,639 Z M505,669 C500,669 488,660 480,652 C490,656 502,664 505,669 Z" fill-rule="evenodd" />
+              <path d="M482,656 C488,668 496,680 488,685 C481,689 476,676 480,660 Z M486,679 C489,677 487,669 483,664 C482,671 483,678 486,679 Z" fill-rule="evenodd" />
+
+              <!-- Outer Right Leaves -->
+              <path d="M524,638 C538,628 552,616 562,618 C568,620 562,630 548,635 C540,637 532,638 524,638 Z" />
+              <path d="M524,639 C538,649 552,661 562,659 C568,657 562,647 548,642 C540,640 532,639 524,639 Z" />
+            </g>
+
+          </g>
+        </g>
+</g>
 </svg>
     </h1>
     <p class="sub" data-in>בדים רכים, גזרות מחמיאות ותשומת לב לכל תפר. שמלות שנוצרות באהבה, בשבילך.</p>
