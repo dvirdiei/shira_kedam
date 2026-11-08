@@ -86,7 +86,7 @@ h1 em{font-style:normal;color:var(--olive)}
 /* ===== קולקציה ===== */
 .coll{padding-block:clamp(70px,10vw,130px);background:rgba(239,230,214,.82);backdrop-filter:blur(4px)}
 .coll-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:54px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:26px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:clamp(14px,3vw,26px);max-width:760px;margin-inline:auto}
 .card{text-decoration:none;display:block}
 .pic{position:relative;aspect-ratio:3/4;border-radius:200px 200px 16px 16px;overflow:hidden;background:var(--bg);display:flex;justify-content:center;padding-top:9%;transition:transform .6s cubic-bezier(.2,.7,.2,1),box-shadow .6s;--hanger:#8B5E3C}
 .pic svg{width:56%;height:auto;transform-origin:50% 4%;filter:drop-shadow(0 12px 10px rgba(74,52,38,.25))}
@@ -149,16 +149,6 @@ footer nav{font-size:15px}
     <symbol id="dC" viewBox="0 0 100 230"><use href="#hanger"/><path d="M24 46 L40 42 Q50 56 60 42 L76 46 L72 68 L66 70 L63 104 L74 220 Q50 228 26 220 L37 104 L34 70 L28 68Z" fill="currentColor"/><path d="M50 108 V224 M44 110 L34 222 M56 110 L66 222 M37 104 Q50 112 63 104" stroke="#000" stroke-opacity=".13" fill="none"/></symbol>
   </defs>
 </svg>
-
-<header>
-  <a class="logo" href="#">קדם</a>
-  <nav>
-    <a class="active" href="#">דף הבית</a>
-    <a href="#collection">חנות</a>
-    <a href="#story">הסיפור שלנו</a>
-    <a href="#contact">צור קשר</a>
-  </nav>
-</header>
 
 <!-- ===== פתיח ===== -->
 <section class="hero">
@@ -522,6 +512,23 @@ footer nav{font-size:15px}
   </div>
 </div>
 
+<!-- ===== קולקציה ===== -->
+<section class="coll" id="collection">
+  <div class="wrap">
+    <div class="coll-head" data-reveal>
+      <div>
+        <div class="eyebrow">חדש בארון</div>
+        <h2>הקולקציה האחרונה</h2>
+      </div>
+      <a class="btn line" href="#">לכל השמלות</a>
+    </div>
+    <div class="grid">
+      <a class="card" href="#" data-reveal><div class="pic" style="--bg:#CBD3BD"><svg viewBox="0 0 100 230" style="color:#6F8059"><use href="#dA"/></svg></div><div class="meta"><b>שמלת זית</b><span>₪620</span></div></a>
+      <a class="card" href="#" data-reveal><div class="pic" style="--bg:#E7D9C2"><svg viewBox="0 0 100 230" style="color:#8B5E3C"><use href="#dB"/></svg></div><div class="meta"><b>שמלת חול</b><span>₪740</span></div></a>
+    </div>
+  </div>
+</section>
+
 <!-- ===== הסיפור ===== -->
 <section class="wrap story" id="story">
   <div data-reveal>
@@ -537,37 +544,18 @@ footer nav{font-size:15px}
   </div>
 </section>
 
-<!-- ===== קולקציה ===== -->
-<section class="coll" id="collection">
-  <div class="wrap">
-    <div class="coll-head" data-reveal>
-      <div>
-        <div class="eyebrow">חדש בארון</div>
-        <h2>הקולקציה האחרונה</h2>
-      </div>
-      <a class="btn line" href="#">לכל השמלות</a>
-    </div>
-    <div class="grid">
-      <a class="card" href="#" data-reveal><div class="pic" style="--bg:#CBD3BD"><svg viewBox="0 0 100 230" style="color:#6F8059"><use href="#dA"/></svg></div><div class="meta"><b>שמלת זית</b><span>₪620</span></div></a>
-      <a class="card" href="#" data-reveal><div class="pic" style="--bg:#E7D9C2"><svg viewBox="0 0 100 230" style="color:#8B5E3C"><use href="#dB"/></svg></div><div class="meta"><b>שמלת חול</b><span>₪740</span></div></a>
-      <a class="card" href="#" data-reveal><div class="pic" style="--bg:#D8C0A8"><svg viewBox="0 0 100 230" style="color:#4A3426"><use href="#dC"/></svg></div><div class="meta"><b>שמלת קקאו</b><span>₪680</span></div></a>
-      <a class="card" href="#" data-reveal><div class="pic" style="--bg:#B9C6A9"><svg viewBox="0 0 100 230" style="color:#FAF6EF"><use href="#dB"/></svg></div><div class="meta"><b>שמלת שמנת</b><span>₪790</span></div></a>
-    </div>
-  </div>
-</section>
-
-<!-- ===== ערכים ===== -->
+<!-- הוסרו מהזרימה בבקשת הלקוח (אפשר להחזיר): ערכים וציטוט
 <section class="wrap values">
   <div class="val" data-reveal><div class="n">01</div><h3>בדים שמרגישים טוב</h3><p>לורם איפסום דולור סיט אמט, קונסקטטור אדיפיסינג אלית סד דיאם נונומי אייר מוד.</p></div>
   <div class="val" data-reveal><div class="n">02</div><h3>תפירה בעבודת יד</h3><p>אינבידונט אוט לבורה אט דולורה מגנה אליקוואם ארט וולופט, אוט אנים אד מינים.</p></div>
   <div class="val" data-reveal><div class="n">03</div><h3>התאמה אישית</h3><p>קוויס נוסטרוד אקסרציטציון אולמקו לבורס ניסי אוט אליקוויפ אקס אי קומודו.</p></div>
 </section>
 
-<!-- ===== ציטוט ===== -->
 <section class="quote">
   <blockquote data-reveal>"לראשונה מצאתי שמלה שמרגישה כאילו נתפרה בדיוק בשבילי."</blockquote>
   <cite data-reveal>— לקוחה מרוצה</cite>
 </section>
+-->
 
 <!-- ===== צור קשר ===== -->
 <section class="wrap contact" id="contact">
@@ -614,7 +602,6 @@ footer nav{font-size:15px}
   gsap.registerPlugin(ScrollTrigger);
 
   // פתיח: כניסה עדינה של התפריט, הלוגו והטקסט
-  gsap.from('header',{opacity:0,duration:1.2,ease:'power2.out',delay:.2});
   gsap.set('[data-in]',{y:30,opacity:0});
   gsap.to('[data-in]',{y:0,opacity:1,duration:1.2,stagger:.16,ease:'power3.out',delay:.3});
   var hero={trigger:'.hero',start:'top top',end:'bottom top',scrub:true};
