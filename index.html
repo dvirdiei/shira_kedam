@@ -131,12 +131,16 @@ footer nav{font-size:15px}
 .copy{margin-top:34px;padding-top:22px;border-top:1px solid rgba(239,230,214,.15);font-size:14px;color:rgba(239,230,214,.6)}
 
 /* ===== כרטיס שמלה חי: סרטון קצר בתוך הקשת + כניסה לתלת-ממד ===== */
-.pic-video{padding:0;border:0;width:100%;cursor:pointer;font:inherit;color:inherit}
-.pic-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
-.pic-video video::-webkit-media-controls-start-playback-button{display:none!important;-webkit-appearance:none}
+.pic-3d{border:0;width:100%;cursor:pointer;font:inherit;color:inherit}
 .badge-3d{position:absolute;bottom:16px;left:50%;translate:-50% 0;white-space:nowrap;padding:8px 18px;border-radius:999px;background:rgba(250,246,239,.88);backdrop-filter:blur(4px);color:var(--brown);font-size:14px;letter-spacing:.04em;border:1px solid rgba(139,94,60,.35);transition:background .3s,color .3s}
-.pic-video:hover .badge-3d,.pic-video:focus-visible .badge-3d{background:var(--clay);color:var(--cream)}
-.pic-video:focus-visible{outline:2px solid var(--clay);outline-offset:4px}
+.pic-3d:hover .badge-3d,.pic-3d:focus-visible .badge-3d{background:var(--clay);color:var(--cream)}
+.pic-3d:focus-visible{outline:2px solid var(--clay);outline-offset:4px}
+.badge-short{display:none}
+@media(max-width:600px){
+  .badge-3d{bottom:8px;padding:4px 11px;font-size:12px}
+  .badge-long{display:none}
+  .badge-short{display:inline}
+}
 
 /* ===== חלון הדמיית תלת-ממד ===== */
 html.modal-open{overflow:hidden}
@@ -187,6 +191,53 @@ html.modal-open{overflow:hidden}
     <symbol id="dA" viewBox="0 0 100 230"><use href="#hanger"/><path d="M32 42 L44 42 Q50 54 56 42 L68 42 L66 86 L84 218 Q50 230 16 218 L34 86 Z" fill="currentColor"/><path d="M50 88 V222 M42 92 L30 220 M58 92 L70 220 M34 86 Q50 94 66 86" stroke="#000" stroke-opacity=".13" fill="none"/></symbol>
     <symbol id="dB" viewBox="0 0 100 230"><use href="#hanger"/><path d="M36 44 L46 44 Q50 52 54 44 L64 44 Q70 72 60 94 C84 142 96 190 99 224 Q50 236 1 224 C4 190 16 142 40 94 Q30 72 36 44Z" fill="currentColor"/><path d="M50 98 V230 M44 98 C36 150 24 190 14 226 M56 98 C64 150 76 190 86 226 M40 94 Q50 102 60 94" stroke="#000" stroke-opacity=".12" fill="none"/></symbol>
     <symbol id="dC" viewBox="0 0 100 230"><use href="#hanger"/><path d="M24 46 L40 42 Q50 56 60 42 L76 46 L72 68 L66 70 L63 104 L74 220 Q50 228 26 220 L37 104 L34 70 L28 68Z" fill="currentColor"/><path d="M50 108 V224 M44 110 L34 222 M56 110 L66 222 M37 104 Q50 112 63 104" stroke="#000" stroke-opacity=".13" fill="none"/></symbol>
+
+    <!-- שמלת הפרחים: איור על קולב בהדפס האמיתי של הבד -->
+    <pattern id="floralPrint" patternUnits="userSpaceOnUse" width="13" height="13"><image href="mida/dress1/fabric.jpg" width="13" height="13" preserveAspectRatio="none"/></pattern>
+    <!-- the video frame is darker than the real fabric: lift it to the light cream-and-rose of the dress -->
+    <filter id="printLift" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.08" intercept=".2"/><feFuncG type="linear" slope="1.02" intercept=".17"/><feFuncB type="linear" slope="1.0" intercept=".15"/>
+      </feComponentTransfer>
+    </filter>
+    <linearGradient id="floralShade" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#2b170c" stop-opacity=".30"/><stop offset=".24" stop-color="#2b170c" stop-opacity="0"/>
+      <stop offset=".62" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#2b170c" stop-opacity=".24"/>
+    </linearGradient>
+    <symbol id="dFloral" viewBox="0 0 100 230">
+      <use href="#hanger"/>
+      <!-- white gathered panel behind the square neckline -->
+      <path d="M38.8 52.5 q1.4 -1.4 2.8 0 t2.8 0 t2.8 0 t2.8 0 t2.8 0 t2.8 0 t2.8 0 t2.8 0 L61.2 66 L38.8 66 Z" fill="#f7f3ec"/>
+      <path d="M40.4 54 V65.5 M42.3 53.6 V65.5 M44.2 54 V65.5 M46.1 53.6 V65.5 M48 54 V65.5 M49.9 53.6 V65.5 M51.8 54 V65.5 M53.7 53.6 V65.5 M55.6 54 V65.5 M57.5 53.6 V65.5 M59.4 54 V65.5" stroke="#000" stroke-opacity=".1" stroke-width=".4" fill="none"/>
+      <!-- straps, bodice, skirt, ruffle in the real print -->
+      <g fill="url(#floralPrint)" filter="url(#printLift)">
+        <path d="M34 44.5 L40 44.5 L40.6 64.5 L34.4 64.5 Z"/>
+        <path d="M60 44.5 L66 44.5 L65.6 64.5 L59.4 64.5 Z"/>
+        <path d="M33.5 63.5 L66.5 63.5 C67 76 65 90 64.6 104 L35.4 104 C35 90 33 76 33.5 63.5 Z"/>
+        <path d="M35.3 103.5 L64.7 103.5 C70.5 136 80 168 86.5 194 L13.5 194 C20 168 29.5 136 35.3 103.5 Z"/>
+        <path d="M13 192 L87 192 C90.5 202 95.5 211 98.5 220 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 C4.5 211 9.5 202 13 192 Z"/>
+      </g>
+      <!-- soft side shading so the flat print reads as a rounded garment -->
+      <g fill="url(#floralShade)">
+        <path d="M33.5 63.5 L66.5 63.5 C67 76 65 90 64.6 104 L35.4 104 C35 90 33 76 33.5 63.5 Z"/>
+        <path d="M35.3 103.5 L64.7 103.5 C70.5 136 80 168 86.5 194 L13.5 194 C20 168 29.5 136 35.3 103.5 Z"/>
+        <path d="M13 192 L87 192 C90.5 202 95.5 211 98.5 220 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 C4.5 211 9.5 202 13 192 Z"/>
+      </g>
+      <!-- seams, gathers and folds -->
+      <path d="M33.6 64 H66.4 M35.4 99.5 H64.6 M35.3 104 H64.7 M13.4 192.5 H86.6" stroke="#2b170c" stroke-opacity=".28" stroke-width=".5" fill="none"/>
+      <path d="M39 104.5 v6 M42.5 104.5 v7 M46 104.5 v6 M54 104.5 v6 M57.5 104.5 v7 M61 104.5 v6 M50 112 V192 M43 110 L34 192 M57 110 L66 192 M38.5 112 L23 192 M61.5 112 L77 192 M9 197 L5 219 M19 195 L17 221 M29 195 L28.5 222 M39 195 L39 222 M50 195 V222 M61 195 L61 222 M71 195 L71.5 222 M81 195 L83 221 M91 197 L95 219" stroke="#000" stroke-opacity=".15" stroke-width=".5" fill="none"/>
+      <!-- lace-up: eyelets, criss-cross cord, bow and long ties -->
+      <g stroke="#fbf8f2" stroke-width="1" stroke-linecap="round" fill="none">
+        <path d="M47.6 70 L52.4 78 M52.4 70 L47.6 78 M47.6 78 L52.4 86 M52.4 78 L47.6 86 M47.6 86 L50 95 M52.4 86 L50 95"/>
+        <path d="M50 95 C46 90.5 41 92.5 42 95.6 C43 98.2 47 97.2 50 95 Z M50 95 C54 90.5 59 92.5 58 95.6 C57 98.2 53 97.2 50 95 Z"/>
+        <path d="M49.4 96 C48.6 112 47.6 128 48.6 146 M50.6 96 C51.8 114 53.4 130 52.2 152"/>
+      </g>
+      <g fill="#ddd9d2" stroke="#7d7264" stroke-width=".3">
+        <circle cx="47.6" cy="70" r=".95"/><circle cx="52.4" cy="70" r=".95"/><circle cx="47.6" cy="78" r=".95"/>
+        <circle cx="52.4" cy="78" r=".95"/><circle cx="47.6" cy="86" r=".95"/><circle cx="52.4" cy="86" r=".95"/>
+      </g>
+      <circle cx="50" cy="95" r="1.2" fill="#fbf8f2"/>
+    </symbol>
   </defs>
 </svg>
 
@@ -564,9 +615,9 @@ html.modal-open{overflow:hidden}
     </div>
     <div class="grid">
       <div class="card" data-reveal>
-        <button class="pic pic-video" type="button" data-open-3d style="--bg:#efe6d6" aria-label="שמלת פרחים: פתיחת הדמיית תלת-ממד">
-          <video muted playsinline loop autoplay preload="metadata" poster="mida/dress1/poster.jpg" src="mida/dress1/loop.mp4" aria-hidden="true"></video>
-          <span class="badge-3d">↻ צפייה בתלת-ממד</span>
+        <button class="pic pic-3d" type="button" data-open-3d style="--bg:#EAD9CE" aria-label="שמלת פרחים: פתיחת הדמיית תלת-ממד">
+          <svg viewBox="0 0 100 230" aria-hidden="true"><use href="#dFloral"/></svg>
+          <span class="badge-3d">↻ <span class="badge-long">צפייה בתלת-ממד</span><span class="badge-short">3D</span></span>
         </button>
         <div class="meta"><b>שמלת פרחים</b><span>מחיר יעודכן</span></div>
       </div>
@@ -648,6 +699,7 @@ html.modal-open{overflow:hidden}
         <button type="button" data-view="side">צד</button>
         <button type="button" data-view="back">גב</button>
         <button type="button" data-view="lace">מחוך ושרוכים</button>
+        <button type="button" data-view="sleeve">שרוול פעמון</button>
         <button type="button" data-view="hem">מלמלה בשוליים</button>
       </div>
       <dl class="viewer-spec">
@@ -655,6 +707,7 @@ html.modal-open{overflow:hidden}
         <div><dt>מחשוף</dt><dd>מרובע, עם כתפיות ופאנל לבן מקומט</dd></div>
         <div><dt>סגירה</dt><dd>שרוך לבן בשלוש לולאות מתכת, נקשר בפפיון בקו המותן</dd></div>
         <div><dt>הדפס וצבע</dt><dd>פרחים בוורוד עתיק וירוק מרווה על רקע שמנת</dd></div>
+        <div><dt>שרוולים</dt><dd>חולצה לבנה עם מחשוף גומי רחב; שרוול צמוד עד המרפק ופעמון רחב שנופל ארוך יותר מאחור</dd></div>
       </dl>
       <p class="viewer-note">הדמיה ממוחשבת שנבנתה לפי צילומי השמלה. ההדפס לקוח מהבד עצמו.</p>
     </aside>
@@ -671,19 +724,19 @@ html.modal-open{overflow:hidden}
 
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // ===== כרטיס חי: הסרטון מתנגן רק כשהוא על המסך =====
-  document.querySelectorAll('.pic-video video').forEach(function(v){
-    v.muted=true;
-    if(reduce){ v.removeAttribute('autoplay'); v.pause(); return; }
-    if(!('IntersectionObserver' in window)) return;
-    new IntersectionObserver(function(es){
-      es.forEach(function(e){ if(e.isIntersecting){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); } else v.pause(); });
-    },{threshold:.15}).observe(v);
-  });
-
   // ===== חלון הדמיית תלת-ממד =====
+  // הקבצים נטענים כסקריפטים רגילים (ולא module), כדי שההדמיה תעבוד גם כשפותחים את האתר ישירות מהתיקייה
+  var V3D='8';                                     // לשנות אחרי כל עדכון של dress3d.js / fabric.js
   var viewer=document.getElementById('viewer'), stage=document.getElementById('viewer-stage');
-  var inst=null, opener=null, loading=false;
+  var inst=null, opener=null, loading=false, libs=null;
+  function loadScript(src){
+    return new Promise(function(res,rej){ var s=document.createElement('script'); s.src=src; s.onload=res; s.onerror=rej; document.head.appendChild(s); });
+  }
+  function load3D(){
+    if(!libs) libs=loadScript('mida/dress1/fabric.js?v='+V3D).then(function(){ return loadScript('dress3d.js?v='+V3D); })
+      .catch(function(err){ libs=null; throw err; });
+    return libs;
+  }
   function setView(name){
     viewer.querySelectorAll('[data-view]').forEach(function(b){ b.classList.toggle('on', b.dataset.view===name); });
     if(inst) inst.focus(name);
@@ -696,11 +749,14 @@ html.modal-open{overflow:hidden}
     setView('front');
     if(inst||loading) return;
     loading=true;
-    import('./dress3d.js?v=5').then(function(m){   // לשנות את v אחרי כל עדכון של dress3d.js
-      loading=false;
-      if(viewer.hidden) return;
-      var l=stage.querySelector('.viewer-loading'); if(l) l.remove();
-      inst=m.mount(stage,{fabric:'mida/dress1/fabric.jpg',reduceMotion:reduce});
+    load3D().then(function(){
+      if(viewer.hidden){ loading=false; return; }
+      return window.KedamDress3D.mount(stage,{reduceMotion:reduce}).then(function(created){
+        loading=false;
+        if(viewer.hidden){ created.destroy(); return; }   // closed while it was loading
+        var l=stage.querySelector('.viewer-loading'); if(l) l.remove();
+        inst=created;
+      });
     }).catch(function(){
       loading=false;
       var l=stage.querySelector('.viewer-loading'); if(l) l.textContent='לא ניתן לטעון את ההדמיה כרגע';
