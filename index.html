@@ -6,6 +6,8 @@
 <title>קדם | שמלות</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500&family=Heebo:wght@300;400;500&display=swap" rel="stylesheet">
+<!-- three.js להדמיית התלת-ממד (נטען רק כשפותחים את ההדמיה) -->
+<script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <style>
 :root{
   --cream:#FAF6EF; --sand:#EFE6D6; --brown:#4A3426; --clay:#8B5E3C;
@@ -127,6 +129,44 @@ footer{background:var(--ink);color:var(--sand);padding:56px 0 34px}
 .foot{display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
 footer nav{font-size:15px}
 .copy{margin-top:34px;padding-top:22px;border-top:1px solid rgba(239,230,214,.15);font-size:14px;color:rgba(239,230,214,.6)}
+
+/* ===== כרטיס שמלה חי: סרטון קצר בתוך הקשת + כניסה לתלת-ממד ===== */
+.pic-video{padding:0;border:0;width:100%;cursor:pointer;font:inherit;color:inherit}
+.pic-video video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.pic-video video::-webkit-media-controls-start-playback-button{display:none!important;-webkit-appearance:none}
+.badge-3d{position:absolute;bottom:16px;left:50%;translate:-50% 0;white-space:nowrap;padding:8px 18px;border-radius:999px;background:rgba(250,246,239,.88);backdrop-filter:blur(4px);color:var(--brown);font-size:14px;letter-spacing:.04em;border:1px solid rgba(139,94,60,.35);transition:background .3s,color .3s}
+.pic-video:hover .badge-3d,.pic-video:focus-visible .badge-3d{background:var(--clay);color:var(--cream)}
+.pic-video:focus-visible{outline:2px solid var(--clay);outline-offset:4px}
+
+/* ===== חלון הדמיית תלת-ממד ===== */
+html.modal-open{overflow:hidden}
+.viewer{position:fixed;inset:0;z-index:100;display:grid;place-items:center;padding:clamp(0px,3vw,32px);background:rgba(43,29,21,.55);backdrop-filter:blur(6px)}
+.viewer[hidden]{display:none}
+.viewer-box{position:relative;width:min(1180px,100%);height:min(780px,100%);display:grid;grid-template-columns:1fr 340px;background:radial-gradient(ellipse at 40% 35%,#fffdf8 0%,#f4ecdf 55%,#e8dcc8 100%);border-radius:24px;overflow:hidden;box-shadow:0 40px 80px -30px rgba(43,29,21,.6)}
+.viewer-stage{position:relative;min-height:0}
+.viewer-stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.viewer-stage canvas:active{cursor:grabbing}
+.viewer-loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--clay);font-size:15px;letter-spacing:.1em}
+.viewer-info{padding:42px 32px 28px;background:rgba(250,246,239,.7);border-inline-start:1px solid rgba(139,94,60,.18);overflow:auto}
+.viewer-info h3{font-family:'Frank Ruhl Libre',serif;font-weight:400;font-size:34px;line-height:1.1}
+.viewer-hint{margin-top:10px;font-size:14px;color:var(--clay)}
+.viewer-views{display:flex;flex-wrap:wrap;gap:8px;margin:22px 0 26px}
+.viewer-views button{font:inherit;font-size:14px;padding:8px 16px;border-radius:999px;border:1px solid rgba(92,107,74,.55);background:transparent;color:var(--olive);cursor:pointer;transition:background .25s,color .25s}
+.viewer-views button:hover,.viewer-views button.on{background:var(--olive);color:var(--cream)}
+.viewer-spec{display:grid;gap:14px;font-size:15px;line-height:1.6}
+.viewer-spec dt{font-size:13px;letter-spacing:.1em;color:var(--olive)}
+.viewer-spec dd{margin:2px 0 0;color:var(--brown)}
+.viewer-note{margin-top:22px;font-size:12.5px;color:rgba(74,52,38,.65);line-height:1.6}
+.viewer-close{position:absolute;top:14px;left:14px;z-index:3;width:42px;height:42px;border-radius:50%;border:1px solid rgba(139,94,60,.35);background:rgba(250,246,239,.9);color:var(--brown);font-size:22px;line-height:1;cursor:pointer}
+.viewer-close:hover{background:var(--clay);color:var(--cream)}
+@media(max-width:860px){
+  .viewer{padding:0}
+  .viewer-box{grid-template-columns:1fr;grid-template-rows:minmax(0,1fr) auto;height:100%;border-radius:0}
+  .viewer-info{padding:18px 20px 22px;border-inline-start:0;border-top:1px solid rgba(139,94,60,.18);max-height:42vh}
+  .viewer-info h3{font-size:26px}
+  .viewer-views{margin:14px 0 16px}
+  .viewer-info .eyebrow{margin-bottom:10px}
+}
 
 @media(max-width:860px){
   nav{gap:12px;font-size:13px;white-space:nowrap}
@@ -523,7 +563,13 @@ footer nav{font-size:15px}
       <a class="btn line" href="#">לכל השמלות</a>
     </div>
     <div class="grid">
-      <a class="card" href="#" data-reveal><div class="pic" style="--bg:#CBD3BD"><svg viewBox="0 0 100 230" style="color:#6F8059"><use href="#dA"/></svg></div><div class="meta"><b>שמלת זית</b><span>₪620</span></div></a>
+      <div class="card" data-reveal>
+        <button class="pic pic-video" type="button" data-open-3d style="--bg:#efe6d6" aria-label="שמלת פרחים: פתיחת הדמיית תלת-ממד">
+          <video muted playsinline loop autoplay preload="metadata" poster="mida/dress1/poster.jpg" src="mida/dress1/loop.mp4" aria-hidden="true"></video>
+          <span class="badge-3d">↻ צפייה בתלת-ממד</span>
+        </button>
+        <div class="meta"><b>שמלת פרחים</b><span>מחיר יעודכן</span></div>
+      </div>
       <a class="card" href="#" data-reveal><div class="pic" style="--bg:#E7D9C2"><svg viewBox="0 0 100 230" style="color:#8B5E3C"><use href="#dB"/></svg></div><div class="meta"><b>שמלת חול</b><span>₪740</span></div></a>
     </div>
   </div>
@@ -588,6 +634,33 @@ footer nav{font-size:15px}
   </div>
 </footer>
 
+<!-- ===== חלון הדמיית תלת-ממד ===== -->
+<div class="viewer" id="viewer" hidden role="dialog" aria-modal="true" aria-labelledby="viewer-title">
+  <div class="viewer-box">
+    <button class="viewer-close" type="button" aria-label="סגירה">×</button>
+    <div class="viewer-stage" id="viewer-stage"><div class="viewer-loading">טוען הדמיה…</div></div>
+    <aside class="viewer-info">
+      <div class="eyebrow">הדמיית תלת-ממד</div>
+      <h3 id="viewer-title">שמלת פרחים</h3>
+      <p class="viewer-hint">גררו לסיבוב · גלגלת או צביטה לזום</p>
+      <div class="viewer-views" role="group" aria-label="זוויות צפייה">
+        <button type="button" data-view="front" class="on">חזית</button>
+        <button type="button" data-view="side">צד</button>
+        <button type="button" data-view="back">גב</button>
+        <button type="button" data-view="lace">מחוך ושרוכים</button>
+        <button type="button" data-view="hem">מלמלה בשוליים</button>
+      </div>
+      <dl class="viewer-spec">
+        <div><dt>גזרה</dt><dd>שמלת מקסי עם מחוך צמוד וחצאית מתרחבת שמסתיימת במלמלה רחבה</dd></div>
+        <div><dt>מחשוף</dt><dd>מרובע, עם כתפיות ופאנל לבן מקומט</dd></div>
+        <div><dt>סגירה</dt><dd>שרוך לבן בשלוש לולאות מתכת, נקשר בפפיון בקו המותן</dd></div>
+        <div><dt>הדפס וצבע</dt><dd>פרחים בוורוד עתיק וירוק מרווה על רקע שמנת</dd></div>
+      </dl>
+      <p class="viewer-note">הדמיה ממוחשבת שנבנתה לפי צילומי השמלה. ההדפס לקוח מהבד עצמו.</p>
+    </aside>
+  </div>
+</div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script>
@@ -597,6 +670,55 @@ footer nav{font-size:15px}
   });
 
   var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ===== כרטיס חי: הסרטון מתנגן רק כשהוא על המסך =====
+  document.querySelectorAll('.pic-video video').forEach(function(v){
+    v.muted=true;
+    if(reduce){ v.removeAttribute('autoplay'); v.pause(); return; }
+    if(!('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){ if(e.isIntersecting){ var p=v.play(); if(p&&p.catch) p.catch(function(){}); } else v.pause(); });
+    },{threshold:.15}).observe(v);
+  });
+
+  // ===== חלון הדמיית תלת-ממד =====
+  var viewer=document.getElementById('viewer'), stage=document.getElementById('viewer-stage');
+  var inst=null, opener=null, loading=false;
+  function setView(name){
+    viewer.querySelectorAll('[data-view]').forEach(function(b){ b.classList.toggle('on', b.dataset.view===name); });
+    if(inst) inst.focus(name);
+  }
+  function openViewer(e){
+    opener=e.currentTarget;
+    viewer.hidden=false;
+    document.documentElement.classList.add('modal-open');
+    viewer.querySelector('.viewer-close').focus();
+    setView('front');
+    if(inst||loading) return;
+    loading=true;
+    import('./dress3d.js?v=5').then(function(m){   // לשנות את v אחרי כל עדכון של dress3d.js
+      loading=false;
+      if(viewer.hidden) return;
+      var l=stage.querySelector('.viewer-loading'); if(l) l.remove();
+      inst=m.mount(stage,{fabric:'mida/dress1/fabric.jpg',reduceMotion:reduce});
+    }).catch(function(){
+      loading=false;
+      var l=stage.querySelector('.viewer-loading'); if(l) l.textContent='לא ניתן לטעון את ההדמיה כרגע';
+    });
+  }
+  function closeViewer(){
+    if(viewer.hidden) return;
+    viewer.hidden=true;
+    document.documentElement.classList.remove('modal-open');
+    if(inst){ inst.destroy(); inst=null; }
+    if(!stage.querySelector('.viewer-loading')){ var d=document.createElement('div'); d.className='viewer-loading'; d.textContent='טוען הדמיה…'; stage.appendChild(d); }
+    if(opener) opener.focus();
+  }
+  document.querySelectorAll('[data-open-3d]').forEach(function(b){ b.addEventListener('click',openViewer); });
+  viewer.querySelector('.viewer-close').addEventListener('click',closeViewer);
+  viewer.addEventListener('click',function(e){ if(e.target===viewer) closeViewer(); });
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeViewer(); });
+  viewer.querySelectorAll('[data-view]').forEach(function(b){ b.addEventListener('click',function(){ setView(b.dataset.view); }); });
 
   if(!window.gsap||reduce) return;
   gsap.registerPlugin(ScrollTrigger);
