@@ -192,51 +192,77 @@ html.modal-open{overflow:hidden}
     <symbol id="dB" viewBox="0 0 100 230"><use href="#hanger"/><path d="M36 44 L46 44 Q50 52 54 44 L64 44 Q70 72 60 94 C84 142 96 190 99 224 Q50 236 1 224 C4 190 16 142 40 94 Q30 72 36 44Z" fill="currentColor"/><path d="M50 98 V230 M44 98 C36 150 24 190 14 226 M56 98 C64 150 76 190 86 226 M40 94 Q50 102 60 94" stroke="#000" stroke-opacity=".12" fill="none"/></symbol>
     <symbol id="dC" viewBox="0 0 100 230"><use href="#hanger"/><path d="M24 46 L40 42 Q50 56 60 42 L76 46 L72 68 L66 70 L63 104 L74 220 Q50 228 26 220 L37 104 L34 70 L28 68Z" fill="currentColor"/><path d="M50 108 V224 M44 110 L34 222 M56 110 L66 222 M37 104 Q50 112 63 104" stroke="#000" stroke-opacity=".13" fill="none"/></symbol>
 
-    <!-- שמלת הפרחים: איור על קולב בהדפס האמיתי של הבד -->
-    <pattern id="floralPrint" patternUnits="userSpaceOnUse" width="13" height="13"><image href="mida/dress1/fabric.jpg" width="13" height="13" preserveAspectRatio="none"/></pattern>
-    <!-- the video frame is darker than the real fabric: lift it to the light cream-and-rose of the dress -->
+    <!-- שמלת הפרחים: איור על קולב בהדפס האמיתי של הבד, עם החולצה הלבנה ושרוולי הפעמון -->
+    <pattern id="floralPrint" patternUnits="userSpaceOnUse" width="12" height="24"><image href="mida/dress1/fabric.jpg" width="12" height="24" preserveAspectRatio="none"/></pattern>
+    <!-- same fabric, cut separately: the corset's print is offset so it reads as its own piece -->
+    <pattern id="floralPrintCorset" patternUnits="userSpaceOnUse" width="12" height="24" patternTransform="translate(5.2 9.1)"><image href="mida/dress1/fabric.jpg" width="12" height="24" preserveAspectRatio="none"/></pattern>
     <filter id="printLift" color-interpolation-filters="sRGB">
       <feComponentTransfer>
-        <feFuncR type="linear" slope="1.08" intercept=".2"/><feFuncG type="linear" slope="1.02" intercept=".17"/><feFuncB type="linear" slope="1.0" intercept=".15"/>
+        <feFuncR type="linear" slope="1.04" intercept=".05"/><feFuncG type="linear" slope="1.03" intercept=".04"/><feFuncB type="linear" slope="1.02" intercept=".035"/>
       </feComponentTransfer>
     </filter>
+    <filter id="corsetDrop" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation=".9"/></filter>
     <linearGradient id="floralShade" x1="0" x2="1" y1="0" y2="0">
       <stop offset="0" stop-color="#2b170c" stop-opacity=".30"/><stop offset=".24" stop-color="#2b170c" stop-opacity="0"/>
       <stop offset=".62" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#2b170c" stop-opacity=".24"/>
     </linearGradient>
+    <linearGradient id="sleeveShade" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#d9d1c4"/><stop offset=".45" stop-color="#fbf9f4"/><stop offset="1" stop-color="#e6dfd3"/>
+    </linearGradient>
     <symbol id="dFloral" viewBox="0 0 100 230">
       <use href="#hanger"/>
-      <!-- white gathered panel behind the square neckline -->
-      <path d="M38.8 52.5 q1.4 -1.4 2.8 0 t2.8 0 t2.8 0 t2.8 0 t2.8 0 t2.8 0 t2.8 0 t2.8 0 L61.2 66 L38.8 66 Z" fill="#f7f3ec"/>
-      <path d="M40.4 54 V65.5 M42.3 53.6 V65.5 M44.2 54 V65.5 M46.1 53.6 V65.5 M48 54 V65.5 M49.9 53.6 V65.5 M51.8 54 V65.5 M53.7 53.6 V65.5 M55.6 54 V65.5 M57.5 53.6 V65.5 M59.4 54 V65.5" stroke="#000" stroke-opacity=".1" stroke-width=".4" fill="none"/>
-      <!-- straps, bodice, skirt, ruffle in the real print -->
+      <!-- white blouse: shoulders on the hanger -->
+      <path d="M25 46.8 H75 L76 64 H24 Z" fill="#f4f0e8"/>
+      <!-- white gathered insert with a frilled top edge -->
+      <path d="M39.6 51.6 q.9 -1.6 1.8 0 t1.8 0 t1.8 0 t1.8 0 t1.8 0 t1.8 0 t1.8 0 t1.8 0 t1.8 0 t1.8 0 t1.8 0 L60.6 66.5 L39.4 66.5 Z" fill="#fbf8f2"/>
+      <path d="M39.8 54.6 H60.2" stroke="#000" stroke-opacity=".12" stroke-width=".45"/>
+      <path d="M41 55.2 V66 M42.8 54.9 V66 M44.6 55.2 V66 M46.4 54.9 V66 M48.2 55.2 V66 M50 54.9 V66 M51.8 55.2 V66 M53.6 54.9 V66 M55.4 55.2 V66 M57.2 54.9 V66 M59 55.2 V66" stroke="#000" stroke-opacity=".09" stroke-width=".4" fill="none"/>
+      <!-- skirt and ruffle -->
+      <g fill="url(#floralPrint)" filter="url(#printLift)"><path d="M35.3 103.5 L64.7 103.5 C70.5 136 80 168 86.5 194 L13.5 194 C20 168 29.5 136 35.3 103.5 Z"/><path d="M13 192 L87 192 C90.5 202 95.5 211 98.5 220 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 C4.5 211 9.5 202 13 192 Z"/></g>
+      <g fill="url(#floralShade)"><path d="M35.3 103.5 L64.7 103.5 C70.5 136 80 168 86.5 194 L13.5 194 C20 168 29.5 136 35.3 103.5 Z"/><path d="M13 192 L87 192 C90.5 202 95.5 211 98.5 220 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 C4.5 211 9.5 202 13 192 Z"/></g>
+      <path d="M13.4 192.5 H86.6" stroke="#2b170c" stroke-opacity=".28" stroke-width=".5" fill="none"/>
+      <path d="M39 104.5 v6 M42.5 104.5 v7 M46 104.5 v6 M54 104.5 v6 M57.5 104.5 v7 M61 104.5 v6 M50 112 V192 M43 110 L34 192 M57 110 L66 192 M38.5 112 L23 192 M61.5 112 L77 192 M9 197 L5 219 M19 195 L17 221 M29 195 L28.5 222 M39 195 L39 222 M50 195 V222 M61 195 L61 222 M71 195 L71.5 222 M81 195 L83 221 M91 197 L95 219" stroke="#000" stroke-opacity=".15" stroke-width=".5" fill="none"/>
+      <!-- bell sleeves: fitted to the elbow, gathered seam, a wide bell that falls longer at the back -->
+      <g id="sleeveL">
+        <g fill="url(#sleeveShade)" stroke="#000" stroke-opacity=".08" stroke-width=".35">
+        <path d="M25 47 C21.2 51 20 60 20.2 72 L20.6 108.6 L29.4 107.8 L31.6 62 L33.6 50 Z"/>
+        <path d="M20.6 108.4 C15.5 124 8.5 146 3 167.5 Q7.5 171.5 12.5 169 Q17.5 166 22 161.6 Q27.5 156 31.5 150.6 L35 146.6 C33 132 31 118 29.4 107.6 Z"/>
+        </g>
+        <g fill="none" stroke="#000" stroke-width=".4">
+        <path d="M20.8 108.6 L29.3 107.8" stroke-opacity=".28" stroke-width=".7"/>
+        <path d="M4.4 165.8 Q8.2 168.6 12.8 166.4 Q17.6 163.4 22 159.2 Q27.2 154 31.4 148.8" stroke-opacity=".12" stroke-width="1.4"/>
+        <path d="M21.8 109 v2.4 M23.4 108.9 v2.6 M25 108.7 v2.4 M26.6 108.5 v2.6 M28.2 108.3 v2.2" stroke-opacity=".14"/>
+        <path d="M22.6 110.6 C18.5 130 12.5 150 8.6 166.8 M25.6 110.4 C24.4 130 22.4 148 20.6 162 M28.2 110.2 C29.4 126 31.2 138 32.8 148.8 M23 50 C23 66 22.8 86 22.6 106 M27.6 52 C27.8 70 27.6 90 27 106" stroke-opacity=".1"/>
+        </g>
+      </g>
+      <use href="#sleeveL" transform="matrix(-1 0 0 1 100 0)"/>
+      <!-- straps and bodice of the dress -->
       <g fill="url(#floralPrint)" filter="url(#printLift)">
         <path d="M34 44.5 L40 44.5 L40.6 64.5 L34.4 64.5 Z"/>
         <path d="M60 44.5 L66 44.5 L65.6 64.5 L59.4 64.5 Z"/>
         <path d="M33.5 63.5 L66.5 63.5 C67 76 65 90 64.6 104 L35.4 104 C35 90 33 76 33.5 63.5 Z"/>
-        <path d="M35.3 103.5 L64.7 103.5 C70.5 136 80 168 86.5 194 L13.5 194 C20 168 29.5 136 35.3 103.5 Z"/>
-        <path d="M13 192 L87 192 C90.5 202 95.5 211 98.5 220 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 C4.5 211 9.5 202 13 192 Z"/>
       </g>
-      <!-- soft side shading so the flat print reads as a rounded garment -->
-      <g fill="url(#floralShade)">
-        <path d="M33.5 63.5 L66.5 63.5 C67 76 65 90 64.6 104 L35.4 104 C35 90 33 76 33.5 63.5 Z"/>
-        <path d="M35.3 103.5 L64.7 103.5 C70.5 136 80 168 86.5 194 L13.5 194 C20 168 29.5 136 35.3 103.5 Z"/>
-        <path d="M13 192 L87 192 C90.5 202 95.5 211 98.5 220 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 q-4.04 4.5 -8.08 0 C4.5 211 9.5 202 13 192 Z"/>
-      </g>
-      <!-- seams, gathers and folds -->
-      <path d="M33.6 64 H66.4 M35.4 99.5 H64.6 M35.3 104 H64.7 M13.4 192.5 H86.6" stroke="#2b170c" stroke-opacity=".28" stroke-width=".5" fill="none"/>
-      <path d="M39 104.5 v6 M42.5 104.5 v7 M46 104.5 v6 M54 104.5 v6 M57.5 104.5 v7 M61 104.5 v6 M50 112 V192 M43 110 L34 192 M57 110 L66 192 M38.5 112 L23 192 M61.5 112 L77 192 M9 197 L5 219 M19 195 L17 221 M29 195 L28.5 222 M39 195 L39 222 M50 195 V222 M61 195 L61 222 M71 195 L71.5 222 M81 195 L83 221 M91 197 L95 219" stroke="#000" stroke-opacity=".15" stroke-width=".5" fill="none"/>
+      <path d="M33.5 63.5 L66.5 63.5 C67 76 65 90 64.6 104 L35.4 104 C35 90 33 76 33.5 63.5 Z" fill="url(#floralShade)"/>
+      <path d="M35.4 104 H64.6" stroke="#2b170c" stroke-opacity=".3" stroke-width=".5"/>
+      <!-- corset: a separate, stiffer piece laced over the dress, open at the centre front -->
+      <rect x="48.6" y="65.6" width="2.8" height="36.6" fill="#2b170c" fill-opacity=".32"/>
+      <g fill="#2b170c" fill-opacity=".38" filter="url(#corsetDrop)" transform="translate(0 1.1)"><path d="M32.8 65.4 L48.8 65.4 L48.8 102.4 L34.5 100.5 C34.1 89 32.4 77 32.8 65.4 Z"/><path d="M67.2 65.4 L51.2 65.4 L51.2 102.4 L65.5 100.5 C65.9 89 67.6 77 67.2 65.4 Z"/></g>
+      <g fill="url(#floralPrintCorset)" filter="url(#printLift)"><path d="M32.8 65.4 L48.8 65.4 L48.8 102.4 L34.5 100.5 C34.1 89 32.4 77 32.8 65.4 Z"/><path d="M67.2 65.4 L51.2 65.4 L51.2 102.4 L65.5 100.5 C65.9 89 67.6 77 67.2 65.4 Z"/></g>
+      <g fill="url(#floralShade)" fill-opacity=".8"><path d="M32.8 65.4 L48.8 65.4 L48.8 102.4 L34.5 100.5 C34.1 89 32.4 77 32.8 65.4 Z"/><path d="M67.2 65.4 L51.2 65.4 L51.2 102.4 L65.5 100.5 C65.9 89 67.6 77 67.2 65.4 Z"/></g>
+      <path d="M38.6 66.4 C38.8 78 38.9 90 39 100.6 M43.8 66.4 V101.3 M56.2 66.4 V101.3 M61.4 66.4 C61.2 78 61.1 90 61 100.6" stroke="#2b170c" stroke-opacity=".16" stroke-width=".4" fill="none"/>
+      <g fill="none" stroke="#5a3a29" stroke-opacity=".55" stroke-width=".55" stroke-linejoin="round"><path d="M32.8 65.4 L48.8 65.4 L48.8 102.4 L34.5 100.5 C34.1 89 32.4 77 32.8 65.4 Z"/><path d="M67.2 65.4 L51.2 65.4 L51.2 102.4 L65.5 100.5 C65.9 89 67.6 77 67.2 65.4 Z"/></g>
+      <path d="M33.2 66 H48.6 M51.4 66 H66.8" stroke="#fff" stroke-opacity=".35" stroke-width=".45"/>
       <!-- lace-up: eyelets, criss-cross cord, bow and long ties -->
       <g stroke="#fbf8f2" stroke-width="1" stroke-linecap="round" fill="none">
-        <path d="M47.6 70 L52.4 78 M52.4 70 L47.6 78 M47.6 78 L52.4 86 M52.4 78 L47.6 86 M47.6 86 L50 95 M52.4 86 L50 95"/>
-        <path d="M50 95 C46 90.5 41 92.5 42 95.6 C43 98.2 47 97.2 50 95 Z M50 95 C54 90.5 59 92.5 58 95.6 C57 98.2 53 97.2 50 95 Z"/>
-        <path d="M49.4 96 C48.6 112 47.6 128 48.6 146 M50.6 96 C51.8 114 53.4 130 52.2 152"/>
+        <path d="M47.3 70 L52.7 77 M52.7 70 L47.3 77 M47.3 77 L52.7 84 M52.7 77 L47.3 84 M47.3 84 L52.7 91 M52.7 84 L47.3 91 M47.3 91 L50 96.4 M52.7 91 L50 96.4"/>
+        <path d="M50 96.4 C46.4 92.2 41.6 93.8 42.4 96.8 C43.2 99.4 47.2 98.6 50 96.4 Z M50 96.4 C53.6 92.2 58.4 93.8 57.6 96.8 C56.8 99.4 52.8 98.6 50 96.4 Z"/>
+        <path d="M49.4 97.4 C48.6 113 47.6 129 48.6 147 M50.6 97.4 C51.8 115 53.4 131 52.2 153"/>
       </g>
       <g fill="#ddd9d2" stroke="#7d7264" stroke-width=".3">
-        <circle cx="47.6" cy="70" r=".95"/><circle cx="52.4" cy="70" r=".95"/><circle cx="47.6" cy="78" r=".95"/>
-        <circle cx="52.4" cy="78" r=".95"/><circle cx="47.6" cy="86" r=".95"/><circle cx="52.4" cy="86" r=".95"/>
+        <circle cx="47.3" cy="70" r=".9"/><circle cx="52.7" cy="70" r=".9"/><circle cx="47.3" cy="77" r=".9"/><circle cx="52.7" cy="77" r=".9"/>
+        <circle cx="47.3" cy="84" r=".9"/><circle cx="52.7" cy="84" r=".9"/><circle cx="47.3" cy="91" r=".9"/><circle cx="52.7" cy="91" r=".9"/>
       </g>
-      <circle cx="50" cy="95" r="1.2" fill="#fbf8f2"/>
+      <circle cx="50" cy="96.4" r="1.2" fill="#fbf8f2"/>
     </symbol>
   </defs>
 </svg>
@@ -705,7 +731,8 @@ html.modal-open{overflow:hidden}
       <dl class="viewer-spec">
         <div><dt>גזרה</dt><dd>שמלת מקסי עם מחוך צמוד וחצאית מתרחבת שמסתיימת במלמלה רחבה</dd></div>
         <div><dt>מחשוף</dt><dd>מרובע, עם כתפיות ופאנל לבן מקומט</dd></div>
-        <div><dt>סגירה</dt><dd>שרוך לבן בשלוש לולאות מתכת, נקשר בפפיון בקו המותן</dd></div>
+        <div><dt>מחוך</dt><dd>מחוך נפרד מאותו בד, מתחת לחזה ועד המותן, עם שוליים מודגשים ופתח בחזית</dd></div>
+        <div><dt>סגירה</dt><dd>שרוך לבן דרך לולאות מתכת במחוך, נקשר בפפיון וקצותיו נופלים ארוכים</dd></div>
         <div><dt>הדפס וצבע</dt><dd>פרחים בוורוד עתיק וירוק מרווה על רקע שמנת</dd></div>
         <div><dt>שרוולים</dt><dd>חולצה לבנה עם מחשוף גומי רחב; שרוול צמוד עד המרפק ופעמון רחב שנופל ארוך יותר מאחור</dd></div>
       </dl>
@@ -726,7 +753,7 @@ html.modal-open{overflow:hidden}
 
   // ===== חלון הדמיית תלת-ממד =====
   // הקבצים נטענים כסקריפטים רגילים (ולא module), כדי שההדמיה תעבוד גם כשפותחים את האתר ישירות מהתיקייה
-  var V3D='8';                                     // לשנות אחרי כל עדכון של dress3d.js / fabric.js
+  var V3D='10';                                     // לשנות אחרי כל עדכון של dress3d.js / fabric.js
   var viewer=document.getElementById('viewer'), stage=document.getElementById('viewer-stage');
   var inst=null, opener=null, loading=false, libs=null;
   function loadScript(src){

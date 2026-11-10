@@ -13,7 +13,8 @@
   }
 
   const TAU = Math.PI * 2;
-  const TILE = 0.11;                       // physical size (m) of one repeat of the print
+  const TILE = 0.08;                       // physical width (m) of one repeat of the print
+  const TILE_V = 0.165;                    // ... and its height (the tile is cut 1 wide : 2 tall from the photo)
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const smooth = (e0, e1, x) => { const t = clamp((x - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); };
   const wrapAngle = (t) => t - TAU * Math.round(t / TAU);
@@ -93,6 +94,22 @@
     const c = Math.cos(th), s = Math.abs(Math.sin(th));
     const fb = c >= 0 ? 1.350 : 1.392;
     return fb + (1.458 - fb) * smooth(0.42, 0.88, s);
+  }
+
+  // ---------- corset (separate piece) ----------
+  const COR_OFF = 0.0145;                  // sits clear of the dress underneath, so it reads as its own layer
+  const CGAP = 0.011;                      // half-width of the front opening that the cord crosses
+  const corTop = (th) => 1.193 - 0.026 * smooth(0.6, 2.5, Math.abs(wrapAngle(th)));
+  const corBot = (th) => { const t = Math.abs(wrapAngle(th)); return 1.034 - 0.011 * Math.exp(-((t / 0.28) ** 2)) + 0.012 * smooth(0.6, 2.5, t); };
+  const corGapTh = () => thetaForX(CGAP, interp(FORM_A, 1.12));
+  // fake contact shadow on the dress right around the corset's edges and inside the front opening
+  function corsetShadow(th, y) {
+    const top = corTop(th), bot = corBot(th), w = Math.abs(wrapAngle(th));
+    let s = 1;
+    if (y > top) s *= 1 - 0.24 * (1 - smooth(top, top + 0.014, y));
+    if (y < bot) s *= 1 - 0.3 * smooth(bot - 0.022, bot, y);      // darkest right under the edge
+    if (y >= bot && y <= top && w < corGapTh() + 0.02) s *= 0.78;   // inside the opening, under the lacing
+    return s;
   }
 
   // ---------- geometry helpers ----------
@@ -272,7 +289,7 @@
     // binding / piping in the same print: a tube's U runs along its length, so repeat the print by length
     function attachPipingMap({ mat, len }) {
       const t = print.clone();                        // only once the image exists (clone() flags an upload)
-      t.repeat.set(len / TILE, 0.05);
+      t.repeat.set(len / TILE, 0.025);
       extraTex.push(t);
       mat.map = t;
       mat.color.set('#ffffff');
@@ -354,7 +371,7 @@
       const th = Math.PI + u * TAU, top = bodiceTop(th), y = 0.995 + v * (top - 0.995);
       const p = bodyAt(th, y, bodiceOff(y));
       const seamShade = 0.92 + 0.08 * smooth(0.0, 0.006, Math.abs(y - 1.039));
-      return { p: [p.x, y, p.z], uv: [(u * TAU * 0.142) / TILE, y / TILE], shade: seamShade };
+      return { p: [p.x, y, p.z], uv: [(u * TAU * 0.142) / TILE, y / TILE_V], shade: seamShade * corsetShadow(th, y) };
     }, true), fabric);
     const edgePts = [], waistPts = [];
     for (let i = 0; i < 240; i++) {
@@ -385,12 +402,33 @@
           th = sg * Math.PI - thetaForX(x, interp(FORM_A, y));
         }
         const p = bodyAt(th, y, 0.013);
-        return { p: [p.x, p.y, p.z], uv: [x / TILE, v * 0.75 / TILE], shade: 0.96 };
+        return { p: [p.x, p.y, p.z], uv: [x / TILE, v * 0.75 / TILE_V], shade: 0.96 };
       }, false), fabric);
     }
 
-    // ----- lace-up: eyelets, criss-cross cord, bow and long ties -----
-    const surf = (x, y, off) => {                     // point on the bodice / skirt front, plus its normal
+    // ----- corset: a separate, stiffer piece over the dress, from under the bust to the waist, open at the front -----
+    const cTh0 = corGapTh();
+    add(gridGeometry(260, 40, (u, v) => {
+      const th = cTh0 + u * (TAU - 2 * cTh0);         // runs from the left front edge, round the back, to the right one
+      const bot = corBot(th), top = corTop(th), y = bot + v * (top - bot);
+      const w = wrapAngle(th);
+      let seam = 0;                                    // boning / panel seams
+      for (const s of [0.62, 1.35, 2.3]) seam += Math.exp(-(((Math.abs(w) - s) / 0.022) ** 2));
+      const edge = Math.min(y - bot, top - y, Math.abs(Math.abs(w) - cTh0) * 0.15);
+      const p = bodyAt(th, y, COR_OFF);
+      return { p: [p.x, y, p.z], uv: [(th * 0.15) / TILE + 0.5, y / TILE_V + 0.31], shade: (1 - 0.14 * seam) * (0.88 + 0.12 * smooth(0, 0.007, edge)) };
+    }, false), fabric);
+    // bound edges all round the corset
+    const cEdge = (fn, n) => { const pts = []; for (let i = 0; i <= n; i++) pts.push(fn(i / n)); return pts; };
+    const onCorset = (th, y) => { const p = bodyAt(th, y, COR_OFF + 0.0012); return new THREE.Vector3(p.x, y, p.z); };
+    dress.add(tube(cEdge((t) => { const th = cTh0 + t * (TAU - 2 * cTh0); return onCorset(th, corTop(th)); }, 200), 0.0022, piping(0.9), false, 400));
+    dress.add(tube(cEdge((t) => { const th = cTh0 + t * (TAU - 2 * cTh0); return onCorset(th, corBot(th)); }, 200), 0.0022, piping(0.85), false, 400));
+    for (const th of [cTh0, TAU - cTh0]) {
+      dress.add(tube(cEdge((t) => { const y = corBot(th) + t * (corTop(th) - corBot(th)); return onCorset(th, y); }, 20), 0.0022, piping(0.18), false, 40));
+    }
+
+    // ----- lace-up on the corset: eyelets, criss-cross cord, bow and long ties -----
+    const surf = (x, y, off) => {                     // point on the corset / bodice / skirt front, plus its normal
       if (y >= 1.0) {
         const p = bodyAt(thetaForX(x, interp(FORM_A, y)), y, off);
         return { v: new THREE.Vector3(p.x, y, p.z), n: new THREE.Vector3(p.nx, 0, p.nz) };
@@ -400,12 +438,12 @@
       const n = new THREE.Vector3(Math.sin(th), 0.15, Math.cos(th)).normalize();
       return { v: new THREE.Vector3(s.x, y, s.z).addScaledVector(n, off), n };
     };
-    const EY = [1.186, 1.150, 1.114], EX = 0.021;
+    const EY = [1.172, 1.142, 1.112, 1.082], EX = CGAP + 0.0065;
     const eyelets = [];
     const ringGeo = new THREE.TorusGeometry(0.0047, 0.0016, 10, 28);
     for (const y of EY) {
       for (const sg of [-1, 1]) {
-        const s = surf(sg * EX, y, 0.0092);
+        const s = surf(sg * EX, y, COR_OFF + 0.0008);
         const r = new THREE.Mesh(ringGeo, metal);
         r.position.copy(s.v);
         r.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), s.n);
@@ -422,7 +460,7 @@
         dress.add(tube([p.v, bulge(p, q, 0.004), q.v], 0.0021, cord, false, 24));
       }
     }
-    const K = surf(0, 1.082, 0.013).v;                // the knot of the bow, just above the waist seam
+    const K = surf(0, 1.058, COR_OFF + 0.004).v;      // the knot of the bow, low on the corset
     const knot = new THREE.Mesh(new THREE.SphereGeometry(0.0062, 20, 14), cord); knot.position.copy(K); knot.castShadow = true; dress.add(knot);
     for (const sg of [-1, 1]) {
       const last = Ey(EY.length - 1, sg);
@@ -431,9 +469,10 @@
       dress.add(tube([K, o(0.016, 0.010, 0.004), o(0.038, 0.014, 0.007), o(0.052, 0.003, 0.007), o(0.044, -0.010, 0.006), o(0.020, -0.007, 0.004), K], 0.0024, cord, false, 60));
       const tie = [K];
       const endY = sg < 0 ? 0.80 : 0.75;
-      for (let y = 1.06; y >= endY; y -= 0.025) {
+      for (let y = 1.04; y >= endY; y -= 0.025) {
         const x = sg * (0.006 + 0.012 * smooth(1.06, 0.95, y)) + 0.004 * Math.sin(y * 31 + sg);
-        tie.push(surf(x, y, y >= 1.0 ? 0.0118 : 0.0075).v);   // clear of the waistband ridge
+        // over the corset, then over its bottom edge onto the skirt
+        tie.push(surf(x, y, y >= 1.022 ? COR_OFF + 0.003 : y >= 1.0 ? 0.0118 : 0.0075).v);
       }
       dress.add(tube(tie, 0.0022, cord, false, 120));
       const end = new THREE.Mesh(new THREE.SphereGeometry(0.0034, 12, 10), cord); end.position.copy(tie[tie.length - 1]); dress.add(end);
@@ -444,14 +483,14 @@
       const th = Math.PI + u * TAU, y = 0.30 + v * (1.022 - 0.30);
       const s = skirtAt(th, y);
       const inner = 0.82 + 0.18 * smooth(0.32, 0.9, y);
-      return { p: [s.x, y, s.z], uv: [(u * TAU * 0.235) / TILE, y / TILE], shade: s.shade * inner };
+      return { p: [s.x, y, s.z], uv: [(u * TAU * 0.235) / TILE, y / TILE_V], shade: s.shade * inner * corsetShadow(th, y) };
     }, true), fabric);
 
     // ----- ruffle tier at the hem -----
     add(gridGeometry(480, 40, (u, v) => {
       const th = Math.PI + u * TAU, yh = ruffleHemY(th), y = yh + v * (0.318 - yh);
       const s = ruffleAt(th, y);
-      return { p: [s.x, y, s.z], uv: [(u * TAU * 0.345) / TILE + 0.37, y / TILE], shade: s.shade * (0.9 + 0.1 * v) };
+      return { p: [s.x, y, s.z], uv: [(u * TAU * 0.345) / TILE + 0.37, y / TILE_V], shade: s.shade * (0.9 + 0.1 * v) };
     }, true), fabric);
     const ruffleSeam = [], hemPts = [];
     for (let i = 0; i < 480; i++) {
